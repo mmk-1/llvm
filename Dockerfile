@@ -16,6 +16,10 @@ RUN echo "deb https://apt.llvm.org/buster llvm-toolchain-buster-16 main" \
     for f in /usr/lib/llvm-16/bin/*; do ln -sf "$f" /usr/bin; done && \
     rm -rf /var/lib/apt/lists/*
 
+# Install Flex, Bison, libomp-dev
+RUN apt-get -qq update; \
+    apt-get install -qqy --no-install-recommends flex bison libomp-dev
+
 FROM intermediate as test
 
 COPY tests /tests
@@ -23,4 +27,3 @@ COPY tests /tests
 RUN /tests/run.sh 16
 
 FROM intermediate as final
-
